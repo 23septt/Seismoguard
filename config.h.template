@@ -1,0 +1,16 @@
+/**
+ * config.h.template — Copy to config.h and fill in your values.
+ *
+ *   cp config.h.template config.h
+ *
+ * config.h is gitignored. Never commit real credentials.
+ *
+ * NOTE: LINE Notify was discontinued by LINE on 2025-03-31. New deployments
+ * should use the seismoguard_s3 firmware (ntfy.sh) instead.
+ */
+
+#pragma once
+
+#define WIFI_SSID      "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD  "YOUR_WIFI_PASSWORD"
+#define LINE_TOKEN     "YOUR_LINE_NOTIFY_TOKEN"

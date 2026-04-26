@@ -1,0 +1,15 @@
+/**
+ * config.h.template — Copy to config.h and fill in your values.
+ *
+ *   cp config.h.template config.h
+ *
+ * config.h is gitignored. Never commit real credentials.
+ *
+ * SECURITY: ntfy.sh topics are PUBLIC. Use a long random string.
+ */
+
+#pragma once
+
+#define WIFI_SSID   "YOUR_WIFI_SSID"
+#define WIFI_PASS   "YOUR_WIFI_PASSWORD"
+#define NTFY_TOPIC  "seismoguard_change_to_unique_long_random_string"

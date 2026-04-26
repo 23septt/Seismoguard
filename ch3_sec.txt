@@ -1,0 +1,316 @@
+﻿3.2.6 </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t>การออกแบบอัลกอริทึม STA/LTA Recursive สำหรับตรวจจับ P-wave</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE06e345" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ออกแบบอัลกอริทึมสำหรับตรวจจับจุดเริ่มต้นของคลื่น P-wave โดยใช้หลักการ Short-Term Average / Long-Term Average (STA/LTA) แบบ Recursive ที่ใช้ Exponential Moving Average (EMA) เพื่อให้สามารถคำนวณได้แบบ real-time บนไมโครคอนโทรลเลอร์ โดยมีขั้นตอนการออกแบบ ดังนี้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE01bcb6" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">1)  การคำนวณ Characteristic Function (CF) โดยคำนวณเฉพาะแกน Z (แนวดิ่ง) ซึ่งตรวจจับ P-wave ได้ดีที่สุด ตามสมการ: CF = (az - mean_az)^2 เมื่อ az คือค่าความเร่งแกน Z และ mean_az คือค่าเฉลี่ยระยะยาว</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE03e7c8" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">2)  การกรองค่าผิดปกติ (Spike Rejection) เพื่อป้องกัน False Alarm จากสัญญาณรบกวนชั่วขณะ: ถ้า CF > 100 * LTA ให้ปรับ CF = 100 * LTA ก่อนนำไปคำนวณ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE085284" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">3)  การอัปเดต STA และ LTA แบบ Recursive (EMA): STA = alpha_STA * CF + (1 - alpha_STA) * STA_prev และ LTA = alpha_LTA * CF + (1 - alpha_LTA) * LTA_prev โดยค่า alpha คำนวณจาก alpha = 1 - exp(-1/tau) เมื่อ tau คือขนาดหน้าต่างที่ต้องการ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE06a64f" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">4)  State Machine เพื่อควบคุมการแจ้งเตือน: (STANDBY) ระบบรอรับสัญญาณ LTA ปรับตัวตามสภาพแวดล้อม -> (DETECTING) เมื่อ Ratio = STA/LTA >= 5.0 ระบบเริ่มนับ LTA หยุดปรับค่า -> (ALARMING) เมื่อ Ratio >= 5.0 ติดต่อกัน 10 ตัวอย่าง Buzzer และ LED ทำงาน -> (LOCKOUT) หลังจบ Alarm รอ 5 วินาทีก่อนเริ่มรอบใหม่</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE131dbd" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+        <w:t xml:space="preserve">3.2.7 </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t>การเตรียมข้อมูลทดสอบจากฐานข้อมูล STEAD</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0ff45f" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">คัดเลือกชุดข้อมูลสัญญาณสั่นสะเทือนจากฐานข้อมูล STEAD (STanford EArthquake Dataset) ซึ่งเป็นฐานข้อมูลแผ่นดินไหวมาตรฐานสากล เพื่อใช้ทดสอบประสิทธิภาพของอัลกอริทึมในสภาวะที่ควบคุมได้ โดยมีขั้นตอนดังนี้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0cef8f" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">1)  คัดเลือกชุดข้อมูลสัญญาณ P-wave จำนวน 77 ตัวอย่าง (Positive class) และสัญญาณ Noise จำนวน 38 ตัวอย่าง (Negative class) รวม 115 ชุดข้อมูล</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0e24c6" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">2)  แปลงข้อมูลจาก sampling rate เดิม 100 Hz ลงเหลือ 50 Hz เพื่อให้ตรงกับ sampling rate ของ MPU6050 ที่ใช้ในโครงงาน โดยใช้วิธี Resampling</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0887ff" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">3)  สกัดเฉพาะแกน Z (แนวดิ่ง) ออกมาใช้ เนื่องจากอัลกอริทึมออกแบบให้ใช้แกน Z เพียงแกนเดียวในการคำนวณ Characteristic Function</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE064b7a" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">4)  ทดสอบการรันอัลกอริทึม STA/LTA Recursive บนข้อมูล STEAD ที่เตรียมไว้ผ่านสคริปต์ Node.js (param_test.js) เพื่อจำลองการทำงานของ firmware บน Arduino</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE1aff7e" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+        <w:t xml:space="preserve">3.2.8 </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t>การหาค่าพารามิเตอร์ที่เหมาะสมด้วยวิธี Grid Search</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0cb225" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ดำเนินการหาค่าพารามิเตอร์ที่เหมาะสมที่สุดสำหรับอัลกอริทึม STA/LTA Recursive โดยใช้วิธี Grid Search ซึ่งทดสอบครบทุกชุดพารามิเตอร์ที่กำหนดไว้ในขอบเขตการค้นหา โดยมีรายละเอียดดังนี้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE002328" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pPr>
+        <w:ind w:left="1440" w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">1)  พารามิเตอร์ที่ต้องการค้นหา ได้แก่ ขนาดหน้าต่าง STA (tau_STA), ค่า Threshold อัตราส่วน STA/LTA (RATIO), จำนวนตัวอย่างขั้นต่ำที่ตรวจพบติดต่อกัน (MIN) และค่าคูณสำหรับ Spike Rejection (SPIKE)</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="BE0bddf8" w14:textId="77777777" w:rsidR="00BC0001" w:rsidRDefault="00BC0001" w:rsidP="0044381F">
+      <w:pP

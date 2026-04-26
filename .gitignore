@@ -1,0 +1,6 @@
+node_modules/
+.env
+config.h
+**/config.h
+*.log
+.DS_Store

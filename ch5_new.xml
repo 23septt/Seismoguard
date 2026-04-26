@@ -1,0 +1,438 @@
+    <w:p w14:paraId="CFec3c0" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">จากการดำเนินโครงงานเรื่องการพัฒนาระบบเตือนภัยแผ่นดินไหวล่วงหน้าต้นทุนต่ำ SeismoGuard โดยอาศัยการตรวจจับคลื่นไหวสะเทือนชนิด P-Wave ด้วยอัลกอริทึม STA/LTA แบบ Recursive บนไมโครคอนโทรลเลอร์ Arduino Uno ร่วมกับเซนเซอร์ MPU6050 และได้ทำการทดสอบประสิทธิภาพด้วยชุดข้อมูลมาตรฐาน STEAD ผ่านกระบวนการ Grid Search สามารถสรุปผล อภิปรายผล และเสนอแนะแนวทางการพัฒนาต่อยอดได้ดังนี้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF9c85d" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">5.1 สรุปผลการดำเนินงาน</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF962f7" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">โครงงานนี้ประสบความสำเร็จในการพัฒนาอุปกรณ์เตือนภัยแผ่นดินไหวล่วงหน้าต้นทุนต่ำที่สามารถทำงานได้แบบ Standalone โดยระบบอ่านค่าความเร่งจากแกน Z ของ MPU6050 ที่อัตราสุ่มตัวอย่าง 50 Hz คำนวณ Characteristic Function ในรูป CF = (a_z − mean)² กรองสัญญาณแปลกปลอมด้วย Spike Rejection ที่ระดับ 100 เท่าของ LTA จากนั้นประมวลผลด้วยอัลกอริทึม STA/LTA Recursive ที่ใช้ Exponential Moving Average เพื่อให้เหมาะสมกับหน่วยความจำ 2 KB ของ ATmega328P และตัดสินใจผ่าน State Machine สี่สถานะ ได้แก่ STANDBY DETECTING ALARMING และ LOCKOUT</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF01c2f" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">การหาค่าพารามิเตอร์ที่เหมาะสมดำเนินการผ่านกระบวนการ Grid Search ที่ครอบคลุม 225 ชุดพารามิเตอร์ โดยจำลองการทำงานบนตัวอย่างจากชุดข้อมูลมาตรฐาน STEAD รวม 25,875 การจำลอง ประกอบด้วยสัญญาณ P-wave จำนวน 77 ชุดและสัญญาณ noise จำนวน 38 ชุด ผลการค้นหาพบว่าชุดพารามิเตอร์ที่ให้ประสิทธิภาพสูงสุด ได้แก่ STA window = 0.5 วินาที, อัตราส่วน RATIO threshold = 5.0, จำนวนตัวอย่างขั้นต่ำที่ต่อเนื่อง MIN = 10 ตัวอย่าง และ SPIKE rejection factor = 100 เท่า โดยใช้ LTA window = 30 วินาทีคงที่ตลอดการค้นหา</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF05aef" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ด้วยชุดพารามิเตอร์ที่ได้จาก Grid Search ระบบสามารถตรวจจับสัญญาณ P-wave ได้ครบถ้วน 100% (77/77) มีความหน่วงเฉลี่ยในการตรวจจับ 11.1 ตัวอย่าง เทียบเท่าประมาณ 222 มิลลิวินาที ที่อัตราสุ่มตัวอย่าง 50 Hz และมีการแจ้งเตือนเท็จ 1 ใน 38 ตัวอย่าง (ร้อยละ 2.6) ซึ่งเป็นผลการทดสอบจากฐานข้อมูลมาตรฐานที่ได้รับการ label โดยผู้เชี่ยวชาญ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CFc1f5f" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ในด้านการทดสอบทางกายภาพด้วยชุดจำลองคลื่นสั่นสะเทือนที่ขับเคลื่อนด้วยมอเตอร์ข้อเหวี่ยง ระบบสามารถตอบสนองต่อความถี่ได้ในช่วง 0.48 Hz ถึง 3.32 Hz ซึ่งแปรผันตรงกับแรงดันไฟฟ้าที่จ่ายให้มอเตอร์ โดยครอบคลุมย่านความถี่ P-wave ที่พบบ่อยในแผ่นดินไหวขนาดปานกลางถึงขนาดใหญ่ในภูมิภาคเอเชียตะวันออกเฉียงใต้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF96aee" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">5.2 อภิปรายผล</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CFe19d3" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ความสำเร็จหลักของโครงงานนี้อยู่ที่การเลือกใช้รูปแบบ Recursive (EMA) สำหรับ STA/LTA แทนที่จะเป็น windowed sum แบบดั้งเดิม เนื่องจากโครงสร้างดังกล่าวต้องการหน่วยความจำและการคำนวณต่อตัวอย่างคงที่เป็น O(1) ซึ่งเหมาะสมอย่างยิ่งสำหรับ ATmega328P ที่มี RAM เพียง 2 KB ในขณะที่สามารถรักษาคุณสมบัติการตรวจจับ onset ที่มีประสิทธิภาพสูงไว้ได้เทียบเคียงกับ windowed STA/LTA มาตรฐาน</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF43440" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">การเลือกใช้ Characteristic Function จากแกน Z เพียงแกนเดียวในรูป (a_z − mean)² มีความสอดคล้องโดยตรงกับ Z-channel ของชุดข้อมูล STEAD ซึ่งบันทึกสัญญาณแนวดิ่งที่เป็นทิศทางหลักของการแผ่พลังงานคลื่น P-wave ความสอดคล้องนี้ทำให้ค่าพารามิเตอร์ที่ได้จาก Grid Search บน STEAD สามารถนำไปใช้กับอุปกรณ์จริงได้โดยตรง และยังช่วยให้การเปรียบเทียบผลลัพธ์กับงานวิจัยที่ใช้ STEAD เป็น benchmark ทำได้อย่างมีความหมาย</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF1a355" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">กลไก Spike Rejection ที่ตัดค่า CF ที่เกิน 100 เท่าของ LTA ปัจจุบันมีบทบาทสำคัญในการลดอัตราแจ้งเตือนเท็จ เนื่องจากสัญญาณรบกวนแบบ impulsive (เช่น การกระแทก การเคาะ) มักสร้าง spike ที่มีค่า CF สูงชั่วคราวแต่ไม่ยาวนานพอที่จะผ่านเกณฑ์ MIN = 10 ตัวอย่างต่อเนื่อง ทั้งสองเงื่อนไขนี้ร่วมกันกรองสัญญาณรบกวนระยะสั้นได้อย่างมีประสิทธิภาพ ซึ่งสะท้อนให้เห็นจากอัตราแจ้งเตือนเท็จที่ต่ำเพียง 2.6% บนชุดข้อมูล STEAD</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF794b2" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">เมื่อเปรียบเทียบกับงานวิจัยที่เกี่ยวข้อง โครงงานนี้มีจุดแข็งในหลายด้าน Won and Park (2020) พัฒนา BLESeis ด้วยเซนเซอร์ MEMS คุณภาพสูง LIS3DHH (noise density 0.2 mg) และได้ความแม่นยำ 100% เช่นเดียวกัน แต่ด้วยต้นทุนสูงกว่า ในขณะที่ Sianturi และคณะ (2024) ใช้แพลตฟอร์ม Arduino Uno + MPU6050 เหมือนกันแต่ใช้การวัดขนาดความเร่งแบบง่ายแทน STA/LTA ซึ่งได้ความแม่นยำร้อยละ 96 โครงงานนี้จึงแสดงให้เห็นว่าการใช้ STA/LTA Recursive ร่วมกับ Grid Search บน STEAD สามารถยกระดับความแม่นยำของแพลตฟอร์มเดียวกันได้อย่างมีนัยสำคัญ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF02cb5" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">อย่างไรก็ตาม โครงงานนี้มีข้อจำกัดที่สำคัญสามประการที่ต้องยอมรับ ประการแรก ผลลัพธ์ 100% detection rate และ 2.6% false alarm rate ได้จากการทดสอบบนชุดข้อมูล STEAD ซึ่งเป็นสัญญาณที่บันทึกโดยสถานีตรวจวัดระดับมืออาชีพที่มีคุณภาพดีกว่า MPU6050 อย่างมีนัยสำคัญ ดังนั้นประสิทธิภาพจริงในการใช้งานที่มี noise floor ของ MPU6050 (ประมาณ 16 เท่าของ ADXL355) จะต่ำกว่าตัวเลขที่รายงานนี้ ประการที่สอง ระบบแจ้งเตือนปัจจุบันทำงานผ่าน Buzzer และ LED บนตัวอุปกรณ์เท่านั้น ซึ่งไม่สามารถส่งคำเตือนไปถึงผู้ใช้ที่อยู่นอกพื้นที่ได้ทันเวลา อันเป็นจุดอ่อนหลักของระบบ EEW ในเชิงปฏิบัติ ประการที่สาม อัตราแจ้งเตือนเท็จในสภาพแวดล้อมจริงที่มีการสัญจร การสั่นสะเทือนของอาคาร และเสียงรบกวนรอบข้างมีแนวโน้มสูงกว่า 2.6% ที่วัดได้จากชุดข้อมูล STEAD</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CFdcac1" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">นอกจากนี้ เนื่องจากการสุ่มตัวอย่างขณะเริ่มต้นระบบ (bootstrap) ช่วง 6 วินาทีแรกเพื่อให้ LTA มีค่าที่เสถียร หากเกิดแรงสั่นสะเทือนในช่วงดังกล่าวจะส่งผลให้ค่า baseline ของ LTA ผิดปกติและนำไปสู่การแจ้งเตือนที่ไม่ถูกต้อง อีกทั้งอัลกอริทึมปัจจุบันใช้แกน Z เพียงแกนเดียวซึ่งอาจพลาดการตรวจจับแผ่นดินไหวที่มีพลังงานในแนวนอนมากกว่าแนวดิ่ง</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF33ac4" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:b/>
+          <w:bCs/>
+          <w:noProof/>
+          <w:sz w:val="36"/>
+          <w:szCs w:val="36"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">5.3 ข้อเสนอแนะ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF94d86" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">จากข้อจำกัดที่พบในการดำเนินโครงงาน คณะผู้จัดทำมีข้อเสนอแนะในการพัฒนาต่อยอดระบบดังนี้</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF8bd66" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ข้อเสนอแนะที่ 1 และมีความสำคัญสูงสุด คือการพัฒนาระบบแจ้งเตือนระยะไกล โดยต่อยอดจากวงจรปัจจุบันด้วยการเพิ่มโมดูล ESP8266 หรือ ESP32 เพื่อส่งการแจ้งเตือนผ่าน Wi-Fi ไปยังแอปพลิเคชัน LINE Notify, Telegram Bot หรือโปรโตคอล MQTT สำหรับพื้นที่ห่างไกลที่ไม่มีสัญญาณอินเทอร์เน็ต ควรพิจารณาใช้ LoRa หรือโมดูล GSM/SIM800L แทน การพัฒนาในส่วนนี้จะเป็นประโยชน์อย่างยิ่งต่อชุมชนในจังหวัดเชียงราย เชียงใหม่ และพื้นที่เสี่ยงภัยแผ่นดินไหวอื่น ๆ ในภาคเหนือ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF3dbaf" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ข้อเสนอแนะที่ 2 คือการขยายชุดข้อมูลสัญญาณรบกวนที่บันทึกจาก MPU6050 จริง โดยรวบรวมสัญญาณรบกวนในชีวิตประจำวันให้ครบอย่างน้อย 500 ตัวอย่าง แบ่งเป็นประเภท ได้แก่ รถยนต์ผ่าน การวิ่งกระโดด การเปิดปิดประตู และเครื่องใช้ไฟฟ้าที่มีการสั่นสะเทือน เพื่อให้สามารถประเมินอัตราแจ้งเตือนเท็จในสภาพแวดล้อมจริงได้อย่างน่าเชื่อถือ และนำข้อมูลเหล่านี้ไปใช้ในการปรับปรุงพารามิเตอร์หรือพัฒนาตัวกรองเพิ่มเติม</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CFd7b6d" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ข้อเสนอแนะที่ 3 คือการเพิ่มระบบประมาณขนาดแผ่นดินไหวเบื้องต้น โดยวิเคราะห์ peak displacement (Pd) ของ 3 วินาทีแรกของ P-wave ร่วมกับสมการถดถอยของ Wu and Zhao (2006) หรือ Kanamori (2005) เพื่อให้ผู้ใช้ได้รับข้อมูลความรุนแรงโดยประมาณก่อนที่คลื่น S-wave จะเดินทางมาถึง ซึ่งจะเพิ่มคุณค่าของระบบ EEW ในเชิงปฏิบัติอย่างมีนัยสำคัญ</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CFe831c" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ข้อเสนอแนะที่ 4 คือการพัฒนาสู่รูปแบบโครงข่ายเซนเซอร์หลายจุด โดยติดตั้งอุปกรณ์ไม่น้อยกว่า 3 ชุดในพื้นที่ที่แตกต่างกันและเชื่อมต่อผ่าน IoT ระบบโครงข่ายดังกล่าวจะช่วยลดอัตราแจ้งเตือนเท็จด้วยเงื่อนไข "อย่างน้อย 2 โหนดตรวจจับภายใน 5 วินาที" และยังสามารถคำนวณพิกัดศูนย์กลางแผ่นดินไหว (Epicenter) ด้วยวิธีหาตำแหน่งแบบ TDOA (Time Difference Of Arrival) ได้อีกด้วย ซึ่งจะยกระดับระบบจาก single-station device ไปสู่ระบบ EEW ที่ใกล้เคียงมาตรฐานสากล</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF8165c" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">ข้อเสนอแนะที่ 5 คือการทดสอบภาคสนามกับแผ่นดินไหวจริง โดยติดตั้งอุปกรณ์ในพื้นที่เสี่ยงภัยสูงเช่นจังหวัดเชียงรายซึ่งมีกิจกรรมแผ่นดินไหวสม่ำเสมอตามแนว Phayao Fault Zone เพื่อเก็บบันทึก waveform จาก MPU6050 จริงและเปรียบเทียบกับข้อมูลของกรมอุตุนิยมวิทยา ผลลัพธ์จากการทดสอบภาคสนามจะช่วยตรวจสอบความถูกต้องของพารามิเตอร์ที่ได้จาก STEAD และแสดงให้เห็นประสิทธิภาพจริงของระบบในสภาพแวดล้อมที่มีแผ่นดินไหวจริง</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="CF2141f" w14:textId="77777777" w:rsidR="00CF0005" w:rsidRDefault="00CF0005" w:rsidP="004910C5">
+      <w:pPr>
+        <w:ind w:firstLine="720"/>
+        <w:jc w:val="thaiDistribute"/>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:cs="TH Sarabun New"/>
+          <w:noProof/>
+          <w:szCs w:val="32"/>
+          <w:cs/>
+        </w:rPr>
+        <w:t xml:space="preserve">นอกจากข้อเสนอแนะหลักดังกล่าวแล้ว ยังมีการพัฒนาเพิ่มเติมที่ควรดำเนินการในอนาคต ได้แก่ การเพิ่มระบบสำรองไฟฟ้าด้วยแบตเตอรี่ Li-ion และวงจรชาร์จ TP4056 เนื่องจากแผ่นดินไหวมักทำให้ไฟฟ้าดับ การเพิ่มการประมวลผล 3 แกนหรือ PCA เพื่อรองรับแผ่นดินไหวที่มีพลังงานในแนวนอนสูง การติดตั้ง Watchdog Timer ในเฟิร์มแวร์เพื่อป้องกัน MCU ค้าง การจัดเก็บข้อมูลดิบลงบน SD Card ร่วมกับ RTC เพื่อการวิเคราะห์ย้อนหลัง และการเพิ่มอัตราสุ่มตัวอย่างเป็น 100 Hz โดยปรับ DLPF เป็น 21 Hz เพื่อรองรับ P-wave ที่มีองค์ประกอบความถี่สูงถึง 30-40 Hz</w:t>
+      </w:r>
+    </w:p>

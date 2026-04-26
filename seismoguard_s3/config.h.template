@@ -1,0 +1,18 @@
+/**
+ * config.h.template — Copy to config.h and fill in your values.
+ *
+ *   cp config.h.template config.h
+ *
+ * config.h is gitignored. Never commit real credentials.
+ *
+ * SECURITY: ntfy.sh topics are PUBLIC. Anyone who knows the topic can
+ * read or send notifications. Use a long random string (e.g. 16+ chars
+ * mixed case+digits). The firmware appends a runtime random suffix
+ * (-XXXXXX) at boot to make spam harder, but this rotates each reboot.
+ */
+
+#pragma once
+
+#define WIFI_SSID      "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD  "YOUR_WIFI_PASSWORD"
+#define NTFY_TOPIC     "seismoguard_change_to_unique_long_random_string"
