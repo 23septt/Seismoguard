@@ -43,22 +43,28 @@ pub struct SampleRecord {
 
 impl SampleRecord {
     /// Emit a single-line JSON matching `spec/SAMPLE_RECORD.md`.
+    /// Precision pinned to match Python/C: sta_lta_ratio at 6 decimals,
+    /// cf_z + mpd_raw at full f64 precision (~17 significant digits).
     pub fn to_json(&self) -> String {
-        let mut s = String::with_capacity(128);
+        let mut s = String::with_capacity(160);
         let _ = write!(
             s,
-            "{{\"timestamp_ms\":{},\"sta_lta_ratio\":{},\"cf_z\":{},\"mpd_raw\":{},\"sample_count\":{}}}",
+            "{{\"timestamp_ms\":{},\"sta_lta_ratio\":{:.6},\"cf_z\":{},\"mpd_raw\":{},\"sample_count\":{}}}",
             self.timestamp_ms,
-            round6(self.sta_lta_ratio),
-            self.cf_z,
-            self.mpd_raw,
+            self.sta_lta_ratio,
+            f64_full(self.cf_z),
+            f64_full(self.mpd_raw),
             self.sample_count
         );
         s
     }
 }
 
-fn round6(x: f64) -> f64 { (x * 1e6).round() / 1e6 }
+/// Render an f64 with enough precision to round-trip exactly (17 sig digits).
+fn f64_full(x: f64) -> String {
+    if x == 0.0 { return "0.0".to_string(); }
+    format!("{:.17e}", x)
+}
 
 #[derive(Copy, Clone, Debug)]
 pub struct Decision {
