@@ -120,6 +120,8 @@ class Dashboard:
         self._lock = threading.Lock()
         self._latest: Dict = {"type": "sample", "ratio": 0.0,
                               "state_name": "STANDBY", "dz": 0.0}
+        self._start_ts = time.time()
+        self._last_sample_ts: float = 0.0
         self._setup_routes()
 
     def _setup_routes(self) -> None:
@@ -130,6 +132,20 @@ class Dashboard:
         @self.app.route("/api/state")
         def state() -> Response:
             return Response(json.dumps(self._latest), mimetype="application/json")
+
+        @self.app.route("/healthz")
+        def healthz() -> Response:
+            now = time.time()
+            age = now - self._last_sample_ts if self._last_sample_ts else None
+            healthy = bool(self._last_sample_ts) and (age is not None and age < 5.0)
+            body = {
+                "status": "ok" if healthy else "stale",
+                "uptime_s": round(now - self._start_ts, 1),
+                "last_sample_age_s": (round(age, 3) if age is not None else None),
+                "state": self._latest.get("state_name"),
+            }
+            return Response(json.dumps(body), mimetype="application/json",
+                            status=200 if healthy else 503)
 
         @self.app.route("/stream")
         def stream() -> Response:
@@ -158,6 +174,7 @@ class Dashboard:
     def push_sample(self, ratio: float, state: int, dz: float) -> None:
         self._latest = {"type": "sample", "ratio": ratio,
                         "state_name": STATE_NAMES.get(state, "?"), "dz": dz}
+        self._last_sample_ts = time.time()
         self._broadcast(self._latest)
 
     def push_event(self, msg: str) -> None:
