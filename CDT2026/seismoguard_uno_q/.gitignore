@@ -1,0 +1,6 @@
+arduino/config.h
+linux/seismoguard.conf
+.venv/
+__pycache__/
+*.pyc
+assets/*.wav

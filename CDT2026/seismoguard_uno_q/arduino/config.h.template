@@ -1,0 +1,17 @@
+/**
+ * config.h.template — UNO Q MCU side has no WiFi/credentials.
+ *
+ * All cred + topic config lives on Linux side: linux/seismoguard.conf
+ *
+ * This file kept as a placeholder for future MCU-side overrides
+ * (threshold tuning per venue, alarm timing, pixel mapping).
+ *
+ *   cp config.h.template config.h
+ */
+#pragma once
+
+// Per-venue threshold override (uncomment if floor noise is high)
+// #define RATIO_TRIGGER 7.5f
+
+// Per-venue minimum CF (anti-tap) override
+// #define MIN_TRIG_CF_ABS 5e-4f

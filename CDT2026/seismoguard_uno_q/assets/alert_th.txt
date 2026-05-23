@@ -1,0 +1,11 @@
+Thai TTS source phrases (rendered to .wav by scripts/gen_tts.py)
+
+T1 (heads-up):
+    เตือนภัย ตรวจพบความสั่นสะเทือน เตรียมพร้อม
+
+T2 (confirmed):
+    แผ่นดินไหว เตือนภัย รีบหลบ ใต้โต๊ะหรือมุมห้อง
+
+Notes:
+  - Keep phrases short. T2 plays during an active siren — long sentences clip.
+  - Re-render if you change phrasing: python3 scripts/gen_tts.py

@@ -1,0 +1,21 @@
+# SeismoGuard CDT2026 — Linux side config
+# Copy to seismoguard.conf and edit. Never commit real ntfy topic.
+
+ntfy_topic     = seismoguard_REPLACE_WITH_LONG_RANDOM_STRING
+venue_name     = depa_demo_room
+
+# Decision thresholds (Mw)
+mw_t1          = 3.5
+mw_t2          = 4.5
+
+# Assumed hypocentral distance (km) — single-station Mw is preliminary
+r_km           = 10.0
+
+# Alert cooldown (seconds) between same-tier fires
+cooldown_s     = 30
+
+# ALSA aplay device — leave blank for default, or "plughw:1,0" for USB speaker
+aplay_device   =
+
+# Local dashboard HTTP port
+dashboard_port = 8080
