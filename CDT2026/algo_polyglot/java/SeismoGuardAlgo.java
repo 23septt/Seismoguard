@@ -47,10 +47,13 @@ public final class SeismoGuardAlgo {
         }
 
         public String toJson() {
+            // Precision pinned to match Python/C/Rust:
+            //   sta_lta_ratio: 6 decimals
+            //   cf_z, mpd_raw: full double precision (Double.toString round-trips)
             return "{\"timestamp_ms\":" + timestampMs
-                 + ",\"sta_lta_ratio\":" + round6(staLtaRatio)
-                 + ",\"cf_z\":" + cfZ
-                 + ",\"mpd_raw\":" + mpdRaw
+                 + ",\"sta_lta_ratio\":" + String.format(java.util.Locale.ROOT, "%.6f", staLtaRatio)
+                 + ",\"cf_z\":" + Double.toString(cfZ)
+                 + ",\"mpd_raw\":" + Double.toString(mpdRaw)
                  + ",\"sample_count\":" + sampleCount + "}";
         }
     }
@@ -232,8 +235,6 @@ public final class SeismoGuardAlgo {
                 break;
         }
     }
-
-    private static double round6(double x) { return Math.round(x * 1e6) / 1e6; }
 
     public static final class ProcessResult {
         public final SampleRecord record;
