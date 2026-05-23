@@ -1,0 +1,41 @@
+# systemd unit for the SeismoGuard orchestrator on the UNO Q Linux side.
+#
+# Install:
+#   sudo cp scripts/seismoguard.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now seismoguard
+#
+# Status / logs:
+#   systemctl status seismoguard
+#   journalctl -u seismoguard -f
+#
+# Edit Environment + ExecStart paths to match your install location.
+
+[Unit]
+Description=SeismoGuard EEW orchestrator (Linux side)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=arduino
+WorkingDirectory=/home/arduino/seismoguard_uno_q
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/home/arduino/seismoguard_uno_q/.venv/bin/python -m linux.main \
+    --port /dev/ttyACM0 \
+    --config linux/seismoguard.conf \
+    --log-level INFO
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Hardening (relax if you need wider access)
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/arduino/seismoguard_uno_q /home/arduino/.seismoguard
+ProtectHome=read-only
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
