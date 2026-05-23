@@ -1,0 +1,17 @@
+# Force LF line endings on text files so Windows clones don't fight CRLF.
+# Binary files are excluded with -text.
+* text=auto eol=lf
+
+# Binary (don't normalize)
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.pdf    binary
+*.hdf5   binary
+*.docx   binary
+*.pptx   binary
+*.xlsx   binary
+*.mp4    binary
+*.wav    binary
+*.stl    binary
