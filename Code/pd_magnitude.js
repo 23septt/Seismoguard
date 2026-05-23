@@ -26,7 +26,7 @@
  */
 'use strict';
 
-const data = require('C:/Users/Lenovo/OneDrive/Desktop/Claude_Home/Earthquake/seismoguard_data.json');
+const data = require(`${__dirname}/seismoguard_data.json`);
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const SAMPLE_RATE  = 50;

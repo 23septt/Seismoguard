@@ -12,7 +12,7 @@
 'use strict';
 
 const fs   = require('fs');
-const data = require('C:/Users/Lenovo/OneDrive/Desktop/Claude_Home/Earthquake/seismoguard_data.json');
+const data = require(`${__dirname}/seismoguard_data.json`);
 
 const SAMPLE_RATE      = 50;
 const ONSET            = 50;
@@ -197,7 +197,7 @@ console.log(`\nBest F1 = ${bestF1.f1.toFixed(3)} at RATIO = ${bestF1.ratio.toFix
             ` (TPR=${(bestF1.tpr*100).toFixed(0)}%, FPR=${(bestF1.fpr*100).toFixed(0)}%)`);
 
 // ── CSV export ───────────────────────────────────────────────────────────────
-const csvPath = 'C:/Users/Lenovo/OneDrive/Desktop/Claude_Home/Earthquake/roc_data.csv';
+const csvPath = `${__dirname}/roc_data.csv`;
 const csv = ['ratio,tpr,fpr,precision,f1,tp,fp,avg_delay_samples',
   ...rocPoints.map(p =>
     `${p.ratio.toFixed(1)},${p.tpr.toFixed(4)},${p.fpr.toFixed(4)},` +

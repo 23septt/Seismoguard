@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SeismoGuard — CDT2026 Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --stead:    #4A90D9;
+    --lsm:      #27AE60;
+    --mpu:      #E74C3C;
+    --threshold:#F39C12;
+    --bg:       #F8F9FA;
+    --card:     #FFFFFF;
+    --border:   #E0E0E0;
+    --text:     #2C3E50;
+    --muted:    #7F8C8D;
+    --pass:     #D5F5E3;
+    --fail:     #FADBD8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); padding: 24px; }
+
+  /* ─── Header ─────────────────────────────────────────────────────── */
+  .header { background: var(--card); border-left: 5px solid var(--stead); border-radius: 8px;
+    padding: 20px 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); }
+  .header p  { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+  .badges { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .badge { background: var(--bg); border: 1px solid var(--border); border-radius: 20px;
+    padding: 4px 12px; font-size: 0.78rem; font-weight: 600; color: var(--text); }
+  .badge.stead  { border-color: var(--stead); color: var(--stead); }
+  .badge.lsm    { border-color: var(--lsm);   color: var(--lsm);   }
+  .badge.mpu    { border-color: var(--mpu);    color: var(--mpu);   }
+
+  /* ─── Grid ────────────────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-full { margin-bottom: 16px; }
+
+  /* ─── Card ────────────────────────────────────────────────────────── */
+  .card { background: var(--card); border-radius: 8px; padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .card h2 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--muted); margin-bottom: 14px; }
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-wrap-tall { position: relative; height: 320px; }
+
+  /* ─── CFM ────────────────────────────────────────────────────────── */
+  .cfm-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .cfm-card { background: var(--card); border-radius: 8px; padding: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .cfm-card h3 { font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+  .cfm-card .sensor-name { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+  .cfm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .cfm-cell { border-radius: 6px; padding: 14px 10px; text-align: center; }
+  .cfm-cell .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; opacity: .7; }
+  .cfm-cell .value { font-size: 1.8rem; font-weight: 800; line-height: 1; margin: 4px 0; }
+  .cfm-cell .pct   { font-size: 0.72rem; opacity: .8; }
+  .cfm-tp { background: #D5F5E3; color: #1E8449; }
+  .cfm-tn { background: #D6EAF8; color: #1A5276; }
+  .cfm-fp { background: #FADBD8; color: #922B21; }
+  .cfm-fn { background: #FEF9E7; color: #9A7D0A; }
+
+  /* compact CFM for degradation grid */
+  .cfm-row-6 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .cfm-card-sm { background: var(--card); border-radius: 8px; padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); border-top: 4px solid; }
+  .cfm-card-sm.pass { border-color: var(--lsm); }
+  .cfm-card-sm.fail { border-color: var(--mpu); }
+  .cfm-card-sm .k-label { font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing:.04em; margin-bottom: 2px; }
+  .cfm-card-sm .snr-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 10px; }
+  .cfm-grid-sm { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .cfm-cell-sm { border-radius: 5px; padding: 8px 6px; text-align: center; }
+  .cfm-cell-sm .lbl { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; opacity:.65; }
+  .cfm-cell-sm .val { font-size: 1.4rem; font-weight: 800; line-height: 1.1; }
+  .cfm-cell-sm .pct { font-size: 0.65rem; opacity:.75; }
+  .cfm-meta { margin-top: 8px; display: flex; justify-content: space-between;
+    font-size: 0.75rem; flex-wrap: wrap; gap: 2px; }
+  .cfm-meta .mk { color: var(--muted); }
+  .cfm-meta .mv { font-weight: 700; }
+  .mv.pass-v { color: var(--lsm); }
+  .mv.fail-v { color: var(--mpu); }
+  .section-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin: 20px 0 10px; padding-left: 2px; }
+
+  @media (max-width: 900px) {
+    .cfm-row-6 { grid-template-columns: 1fr 1fr; }
+  }
+  .cfm-stats { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .cfm-stat { display: flex; justify-content: space-between; font-size: 0.8rem; }
+  .cfm-stat .k { color: var(--muted); }
+  .cfm-stat .v { font-weight: 700; }
+  .cfm-pass { color: var(--lsm); font-weight: 800; }
+  .cfm-fail { color: var(--mpu); font-weight: 800; }
+
+  /* ─── Summary table ─────────────────────────────────────────────── */
+  .summary-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .stat-card { background: var(--card); border-radius: 8px; padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); border-top: 4px solid; }
+  .stat-card.stead { border-color: var(--stead); }
+  .stat-card.lsm   { border-color: var(--lsm); }
+  .stat-card.mpu   { border-color: var(--mpu); }
+  .stat-card .sname { font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing:.05em; color: var(--muted); }
+  .stat-card .sf1   { font-size: 2rem; font-weight: 800; margin: 2px 0; }
+  .stat-card .sf1.stead { color: var(--stead); }
+  .stat-card .sf1.lsm   { color: var(--lsm); }
+  .stat-card .sf1.mpu   { color: var(--mpu); }
+  .stat-card .smeta { font-size: 0.78rem; color: var(--muted); }
+  .stat-card .verdict { font-size: 0.75rem; font-weight: 700; margin-top: 6px;
+    padding: 2px 8px; border-radius: 10px; display: inline-block; }
+  .verdict-pass { background: var(--pass); color: #1E8449; }
+  .verdict-fail { background: var(--fail); color: #922B21; }
+
+  /* ─── Footer ─────────────────────────────────────────────────────── */
+  .footer { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 20px; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .cfm-row, .summary-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Header ────────────────────────────────────────────────────────────── -->
+<div class="header">
+  <h1>SeismoGuard — CDT2026 Algorithm Validation &amp; Sensor Analysis</h1>
+  <p>STA/LTA Recursive Detector · STEAD Dataset (404 P-wave + 192 Noise after cleaning) · RATIO=5.0 · 30 MC trials per level</p>
+  <div class="badges">
+    <span class="badge stead">STEAD broadband — K=0</span>
+    <span class="badge lsm">LSM6DSOX 70 µg/√Hz — K=2.80</span>
+    <span class="badge mpu">MPU6050 400 µg/√Hz — K=16.0</span>
+    <span class="badge">AUC = 0.9919</span>
+    <span class="badge">Threshold: F1 ≥ 90%</span>
+  </div>
+</div>
+
+<!-- ─── Stat Cards ─────────────────────────────────────────────────────────── -->
+<div class="summary-row">
+  <div class="stat-card stead">
+    <div class="sname">STEAD Broadband (Baseline)</div>
+    <div class="sf1 stead">99.88%</div>
+    <div class="smeta">F1-Score · Acc 99.83% · Delay 10.4 smp</div>
+    <span class="verdict verdict-pass">✓ PASS</span>
+  </div>
+  <div class="stat-card lsm">
+    <div class="sname">ST LSM6DSOX · Proposed Upgrade</div>
+    <div class="sf1 lsm">97.67%</div>
+    <div class="smeta">F1-Score · Acc 96.92% · Delay 18.2 smp</div>
+    <span class="verdict verdict-pass">✓ PASS</span>
+  </div>
+  <div class="stat-card mpu">
+    <div class="sname">InvenSense MPU6050 · Current HW</div>
+    <div class="sf1 mpu">83.30%</div>
+    <div class="smeta">F1-Score · Acc 80.62% · Delay 29.1 smp</div>
+    <span class="verdict verdict-fail">✗ FAIL</span>
+  </div>
+</div>
+
+<!-- ─── Row 1: Degradation + Sensor Comparison ───────────────────────────── -->
+<div class="grid-2">
+  <div class="card">
+    <h2>F1 &amp; Accuracy vs Noise Level (K)</h2>
+    <div class="chart-wrap">
+      <canvas id="degradationChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Sensor Performance Comparison</h2>
+    <div class="chart-wrap">
+      <canvas id="sensorBarChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Row 2: Per-Mw Recall + Detection Delay ───────────────────────────── -->
+<div class="grid-2">
+  <div class="card">
+    <h2>Per-Magnitude-Bin Recall by Sensor</h2>
+    <div class="chart-wrap">
+      <canvas id="mwBinChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Detection Delay &amp; TPR by Sensor</h2>
+    <div class="chart-wrap">
+      <canvas id="delayChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CFM: All Degradation Levels ──────────────────────────────────────── -->
+<div class="section-title">Confusion Matrix — Noise Degradation Levels (30 MC trial mean · FP=0 / TN=192 constant across all levels)</div>
+<div class="cfm-row-6">
+
+  <!-- K=0 -->
+  <div class="cfm-card-sm pass">
+    <div class="k-label" style="color:var(--stead)">K = 0 &nbsp;·&nbsp; STEAD Baseline</div>
+    <div class="snr-label">SNR ×1.000 &nbsp;|&nbsp; 25 µg/√Hz</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">403</div><div class="pct">99.75%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">1</div><div class="pct">0.25%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv pass-v">0.9988</span></span>
+      <span><span class="mk">Acc </span><span class="mv pass-v">99.83%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">10.4 smp</span></span>
+    </div>
+  </div>
+
+  <!-- K=1 -->
+  <div class="cfm-card-sm pass">
+    <div class="k-label" style="color:#27AE60">K = 1 &nbsp;·&nbsp; SNR ×0.707</div>
+    <div class="snr-label">1× pre-onset σ injected</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">399</div><div class="pct">98.84%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">5</div><div class="pct">1.16%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv pass-v">0.9941</span></span>
+      <span><span class="mk">Acc </span><span class="mv pass-v">99.21%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">12.0 smp</span></span>
+    </div>
+  </div>
+
+  <!-- K=2 -->
+  <div class="cfm-card-sm pass">
+    <div class="k-label" style="color:#16A085">K = 2 &nbsp;·&nbsp; SNR ×0.447</div>
+    <div class="snr-label">2× pre-onset σ injected</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">392</div><div class="pct">97.10%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">12</div><div class="pct">2.90%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv pass-v">0.9853</span></span>
+      <span><span class="mk">Acc </span><span class="mv pass-v">98.04%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">15.5 smp</span></span>
+    </div>
+  </div>
+
+  <!-- K=4 -->
+  <div class="cfm-card-sm pass">
+    <div class="k-label" style="color:#E67E22">K = 4 &nbsp;·&nbsp; SNR ×0.243</div>
+    <div class="snr-label">4× pre-onset σ · heavy vibration</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">376</div><div class="pct">93.04%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">28</div><div class="pct">6.96%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv pass-v">0.9639</span></span>
+      <span><span class="mk">Acc </span><span class="mv pass-v">95.28%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">21.6 smp</span></span>
+    </div>
+  </div>
+
+  <!-- K=8 -->
+  <div class="cfm-card-sm fail">
+    <div class="k-label" style="color:#C0392B">K = 8 &nbsp;·&nbsp; SNR ×0.124</div>
+    <div class="snr-label">8× pre-onset σ · MEMS + env. noise</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">339</div><div class="pct">83.98%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">65</div><div class="pct">16.02%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv fail-v">0.9129</span></span>
+      <span><span class="mk">Acc </span><span class="mv fail-v">89.14%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">27.8 smp</span></span>
+    </div>
+  </div>
+
+  <!-- K=16 -->
+  <div class="cfm-card-sm fail">
+    <div class="k-label" style="color:var(--mpu)">K = 16 &nbsp;·&nbsp; MPU6050 Spec</div>
+    <div class="snr-label">SNR ×0.062 · 400 µg/√Hz</div>
+    <div class="cfm-grid-sm">
+      <div class="cfm-cell-sm cfm-tp"><div class="lbl">TP</div><div class="val">290</div><div class="pct">71.70%</div></div>
+      <div class="cfm-cell-sm cfm-fn"><div class="lbl">FN</div><div class="val">114</div><div class="pct">28.30%</div></div>
+      <div class="cfm-cell-sm cfm-fp"><div class="lbl">FP</div><div class="val">0</div><div class="pct">0.00%</div></div>
+      <div class="cfm-cell-sm cfm-tn"><div class="lbl">TN</div><div class="val">192</div><div class="pct">100%</div></div>
+    </div>
+    <div class="cfm-meta">
+      <span><span class="mk">F1 </span><span class="mv fail-v">0.8352</span></span>
+      <span><span class="mk">Acc </span><span class="mv fail-v">80.82%</span></span>
+      <span><span class="mk">Delay </span><span class="mv">29.3 smp</span></span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Confusion Matrices (Sensor) ─────────────────────────────────────────── -->
+<div class="section-title">Confusion Matrix — Sensor Comparison (Datasheet Noise Floor)</div>
+<div class="cfm-row">
+
+  <!-- STEAD -->
+  <div class="cfm-card">
+    <h3>Confusion Matrix</h3>
+    <div class="sensor-name" style="color:var(--stead)">STEAD Broadband</div>
+    <div class="cfm-grid">
+      <div class="cfm-cell cfm-tp">
+        <div class="label">True Positive</div>
+        <div class="value">403</div>
+        <div class="pct">99.75% of P-wave</div>
+      </div>
+      <div class="cfm-cell cfm-fn">
+        <div class="label">False Negative</div>
+        <div class="value">1</div>
+        <div class="pct">0.25% missed</div>
+      </div>
+      <div class="cfm-cell cfm-fp">
+        <div class="label">False Positive</div>
+        <div class="value">0</div>
+        <div class="pct">0.00% of Noise</div>
+      </div>
+      <div class="cfm-cell cfm-tn">
+        <div class="label">True Negative</div>
+        <div class="value">192</div>
+        <div class="pct">100.0% correct</div>
+      </div>
+    </div>
+    <div class="cfm-stats">
+      <div class="cfm-stat"><span class="k">F1-Score</span><span class="v cfm-pass">0.9988</span></div>
+      <div class="cfm-stat"><span class="k">Accuracy</span><span class="v cfm-pass">99.83%</span></div>
+      <div class="cfm-stat"><span class="k">FPR</span><span class="v">0.00%</span></div>
+      <div class="cfm-stat"><span class="k">Avg Delay</span><span class="v">10.4 smp (208 ms)</span></div>
+    </div>
+  </div>
+
+  <!-- LSM6DSOX -->
+  <div class="cfm-card">
+    <h3>Confusion Matrix</h3>
+    <div class="sensor-name" style="color:var(--lsm)">ST LSM6DSOX (K=2.80)</div>
+    <div class="cfm-grid">
+      <div class="cfm-cell cfm-tp">
+        <div class="label">True Positive</div>
+        <div class="value">386</div>
+        <div class="pct">95.54% of P-wave</div>
+      </div>
+      <div class="cfm-cell cfm-fn">
+        <div class="label">False Negative</div>
+        <div class="value">18</div>
+        <div class="pct">4.46% missed</div>
+      </div>
+      <div class="cfm-cell cfm-fp">
+        <div class="label">False Positive</div>
+        <div class="value">0</div>
+        <div class="pct">0.00% of Noise</div>
+      </div>
+      <div class="cfm-cell cfm-tn">
+        <div class="label">True Negative</div>
+        <div class="value">192</div>
+        <div class="pct">100.0% correct</div>
+      </div>
+    </div>
+    <div class="cfm-stats">
+      <div class="cfm-stat"><span class="k">F1-Score</span><span class="v cfm-pass">0.9767</span></div>
+      <div class="cfm-stat"><span class="k">Accuracy</span><span class="v cfm-pass">96.92%</span></div>
+      <div class="cfm-stat"><span class="k">FPR</span><span class="v">0.00%</span></div>
+      <div class="cfm-stat"><span class="k">Avg Delay</span><span class="v">18.2 smp (364 ms)</span></div>
+    </div>
+  </div>
+
+  <!-- MPU6050 -->
+  <div class="cfm-card">
+    <h3>Confusion Matrix</h3>
+    <div class="sensor-name" style="color:var(--mpu)">InvenSense MPU6050 (K=16)</div>
+    <div class="cfm-grid">
+      <div class="cfm-cell cfm-tp">
+        <div class="label">True Positive</div>
+        <div class="value">288</div>
+        <div class="pct">71.29% of P-wave</div>
+      </div>
+      <div class="cfm-cell cfm-fn">
+        <div class="label">False Negative</div>
+        <div class="value">116</div>
+        <div class="pct">28.71% missed</div>
+      </div>
+      <div class="cfm-cell cfm-fp">
+        <div class="label">False Positive</div>
+        <div class="value">0</div>
+        <div class="pct">0.00% of Noise</div>
+      </div>
+      <div class="cfm-cell cfm-tn">
+        <div class="label">True Negative</div>
+        <div class="value">192</div>
+        <div class="pct">100.0% correct</div>
+      </div>
+    </div>
+    <div class="cfm-stats">
+      <div class="cfm-stat"><span class="k">F1-Score</span><span class="v cfm-fail">0.8330</span></div>
+      <div class="cfm-stat"><span class="k">Accuracy</span><span class="v cfm-fail">80.62%</span></div>
+      <div class="cfm-stat"><span class="k">FPR</span><span class="v">0.00%</span></div>
+      <div class="cfm-stat"><span class="k">Avg Delay</span><span class="v">29.1 smp (582 ms)</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  SeismoGuard CDT2026 · STEAD (Mousavi et al. 2019) · 30 MC trials · σ_inject = K × σ_pre-onset per trace · Canonical: RATIO=5.0 STA=0.5s MIN=3 SPIKE=50
+</div>
+
+<script>
+Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+Chart.defaults.font.size   = 11;
+
+const COLORS = {
+  stead: '#4A90D9',
+  lsm:   '#27AE60',
+  mpu:   '#E74C3C',
+  thr:   '#F39C12',
+};
+
+// ── 1. Degradation Curve ───────────────────────────────────────────────────
+const degradCtx = document.getElementById('degradationChart').getContext('2d');
+new Chart(degradCtx, {
+  type: 'line',
+  data: {
+    labels: ['K=0\n(STEAD)', 'K=1', 'K=2', 'K=4', 'K=8', 'K=16\n(MPU6050)'],
+    datasets: [
+      {
+        label: 'F1-Score (%)',
+        data: [99.876, 99.415, 98.529, 96.389, 91.283, 83.508],
+        borderColor: COLORS.stead,
+        backgroundColor: COLORS.stead + '22',
+        fill: true, tension: 0.35, pointRadius: 5, pointHoverRadius: 7,
+      },
+      {
+        label: 'Accuracy (%)',
+        data: [99.832, 99.211, 98.037, 95.280, 89.139, 80.817],
+        borderColor: '#8E44AD',
+        backgroundColor: '#8E44AD22',
+        fill: false, tension: 0.35, pointRadius: 5, pointHoverRadius: 7,
+        borderDash: [5, 3],
+      },
+      {
+        label: 'TPR / Recall (%)',
+        data: [99.75, 98.84, 97.10, 93.04, 83.98, 71.70],
+        borderColor: '#E67E22',
+        fill: false, tension: 0.35, pointRadius: 4, pointHoverRadius: 6,
+        borderDash: [3, 3],
+      },
+      {
+        label: 'Pass threshold (90%)',
+        data: [90, 90, 90, 90, 90, 90],
+        borderColor: COLORS.thr,
+        borderDash: [8, 4], pointRadius: 0,
+        borderWidth: 1.5,
+      },
+    ],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: 65, max: 101,
+        title: { display: true, text: 'Metric (%)', font: { size: 10 } },
+        grid: { color: '#F0F0F0' },
+      },
+      x: { grid: { display: false } },
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%` } },
+    },
+  },
+});
+
+// ── 2. Sensor Comparison Bar ────────────────────────────────────────────────
+const sensorCtx = document.getElementById('sensorBarChart').getContext('2d');
+new Chart(sensorCtx, {
+  type: 'bar',
+  data: {
+    labels: ['F1-Score', 'Accuracy', 'TPR (Recall)', 'Specificity'],
+    datasets: [
+      {
+        label: 'STEAD (K=0)',
+        data: [99.876, 99.832, 99.75, 100],
+        backgroundColor: COLORS.stead + 'CC', borderColor: COLORS.stead, borderWidth: 1,
+      },
+      {
+        label: 'LSM6DSOX (K=2.80)',
+        data: [97.672, 96.918, 95.45, 100],
+        backgroundColor: COLORS.lsm + 'CC', borderColor: COLORS.lsm, borderWidth: 1,
+      },
+      {
+        label: 'MPU6050 (K=16)',
+        data: [83.298, 80.615, 71.40, 100],
+        backgroundColor: COLORS.mpu + 'CC', borderColor: COLORS.mpu, borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: 60, max: 102,
+        title: { display: true, text: 'Score (%)', font: { size: 10 } },
+        grid: { color: '#F0F0F0' },
+      },
+      x: { grid: { display: false } },
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%` } },
+    },
+  },
+});
+
+// ── 3. Per-Mw Recall Chart ──────────────────────────────────────────────────
+const mwCtx = document.getElementById('mwBinChart').getContext('2d');
+new Chart(mwCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Mw 3–4.5\n(sub, n=99)', 'Mw 4.5–5\n(T1, n=96)', 'Mw 5–6.5\n(T2, n=184)', 'Mw 6.5+\n(crit, n=25)'],
+    datasets: [
+      {
+        label: 'STEAD (K=0)',
+        data: [99.0, 100.0, 100.0, 100.0],
+        backgroundColor: COLORS.stead + 'CC', borderColor: COLORS.stead, borderWidth: 1,
+      },
+      {
+        label: 'LSM6DSOX (K=2.80)',
+        data: [93.5, 96.3, 95.6, 96.7],
+        backgroundColor: COLORS.lsm + 'CC', borderColor: COLORS.lsm, borderWidth: 1,
+      },
+      {
+        label: 'MPU6050 (K=16)',
+        data: [70.0, 75.6, 68.1, 76.7],
+        backgroundColor: COLORS.mpu + 'CC', borderColor: COLORS.mpu, borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: 55, max: 103,
+        title: { display: true, text: 'Recall (%)', font: { size: 10 } },
+        grid: { color: '#F0F0F0' },
+      },
+      x: { grid: { display: false } },
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+      annotation: {},
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%` } },
+    },
+  },
+});
+
+// ── 4. Detection Delay Chart (horizontal bar) ───────────────────────────────
+const delayCtx = document.getElementById('delayChart').getContext('2d');
+new Chart(delayCtx, {
+  type: 'bar',
+  data: {
+    labels: ['STEAD (K=0)', 'LSM6DSOX (K=2.80)', 'MPU6050 (K=16)'],
+    datasets: [
+      {
+        label: 'Avg Detection Delay (samples)',
+        data: [10.4, 18.2, 29.1],
+        backgroundColor: [COLORS.stead + 'CC', COLORS.lsm + 'CC', COLORS.mpu + 'CC'],
+        borderColor:      [COLORS.stead,        COLORS.lsm,        COLORS.mpu],
+        borderWidth: 1,
+        yAxisID: 'yDelay',
+      },
+      {
+        label: 'TPR / Recall (%)',
+        data: [99.75, 95.45, 71.40],
+        backgroundColor: [COLORS.stead + '44', COLORS.lsm + '44', COLORS.mpu + '44'],
+        borderColor:      [COLORS.stead,        COLORS.lsm,        COLORS.mpu],
+        borderWidth: 2, borderDash: [4, 2],
+        type: 'line', pointRadius: 6, yAxisID: 'yTPR',
+      },
+    ],
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      yDelay: {
+        type: 'linear', position: 'left', min: 0, max: 40,
+        title: { display: true, text: 'Delay (samples @ 50 Hz)', font: { size: 10 } },
+        grid: { color: '#F0F0F0' },
+      },
+      yTPR: {
+        type: 'linear', position: 'right', min: 55, max: 105,
+        title: { display: true, text: 'TPR (%)', font: { size: 10 } },
+        grid: { display: false },
+      },
+      x: { grid: { display: false } },
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            if (ctx.datasetIndex === 0) return ` Delay: ${ctx.parsed.y} smp  (${Math.round(ctx.parsed.y/50*1000)} ms)`;
+            return ` TPR: ${ctx.parsed.y.toFixed(2)}%`;
+          }
+        }
+      },
+    },
+  },
+});
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 // Grid search: find best STA/LTA parameters against real STEAD data
 'use strict';
 
-const data = require('C:/Users/Lenovo/OneDrive/Desktop/Claude_Home/Earthquake/seismoguard_data.json');
+const data = require(`${__dirname}/seismoguard_data.json`);
 const SAMPLE_RATE = 50;
 const ONSET = 50;          // all samples have onset at index 50
 const WINDOW = 250;        // samples per waveform
@@ -124,12 +124,11 @@ function evaluate(params) {
   const detRate = detected / data.pwave.length;
   const avgDelay = detected > 0 ? totalDelay / detected : 999;
 
-  // Score: weighted F1 + delay penalty
-  // TPR weight high (miss is dangerous), FPR weight moderate (false alarm annoying)
+  // Score = TP − FA×0.5 − avgDelay×0.1
   const prec  = (detected + noiseFA) > 0 ? detected / (detected + noiseFA) : 1;
   const tpr   = detRate;
   const f1    = (prec + tpr) > 0 ? 2 * prec * tpr / (prec + tpr) : 0;
-  const score = (f1 * 100) - (avgDelay / WINDOW * 8) - (noiseFA_rate * 20);
+  const score = detected - (noiseFA * 0.5) - (avgDelay * 0.1);
 
   return { detRate, avgDelay, falseAlarmOnNoise, noiseFA, noiseFA_rate, missed, score, f1, prec };
 }

@@ -1,0 +1,5 @@
+detector,tp,fp,fn,tpr,fpr,precision,f1,avg_delay_samples
+"SeismoGuard (recursive, R=6.0)",438,3,1,0.9977,0.0120,0.9932,0.9955,11.63
+"Classic STA/LTA (window, R=6)",0,0,439,0.0000,0.0000,1.0000,0.0000,
+"Classic STA/LTA best-F1 (R=3.5)",427,22,12,0.9727,0.0880,0.9510,0.9617,0.74
+"AIC picker (energy-gated, K=3)",439,158,0,1.0000,0.6320,0.7353,0.8475,12.97
