@@ -55,11 +55,12 @@ printf "0,0,9.81\n0,0,9.82\n0,0,9.80\n" | java -cp java SeismoGuardAlgo
 printf "0,0,9.81\n0,0,9.82\n0,0,9.80\n" | ./c/seismoguard_algo
 ```
 
-**Note on float text formatting:** ports format numbers slightly differently
-(`%g` in C vs Python's `repr` vs Rust's `Display`) — `0` vs `0.0`, scientific
-vs decimal notation. The **numeric values are identical** within float-64
-precision. JSON consumers must parse and compare numerically, not by
-string equality.
+**Float text formatting (locked):** all four ports now use the same
+precision contract — `sta_lta_ratio` at 6 decimals (`%.6f`), and `cf_z`
++ `mpd_raw` at full f64 precision (round-trip-exact). Text differs in
+form (scientific vs decimal notation, `0.0` vs `0.00000000000000000`)
+but parses to the same `f64`. `tools/parity_check.py` passes at the
+strict **`1e-9` default tolerance** across all ports.
 
 ## State machine
 
