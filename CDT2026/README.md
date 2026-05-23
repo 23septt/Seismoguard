@@ -57,7 +57,11 @@ CDT2026/
 |---|---|
 | See the architecture | [seismoguard_uno_q/README.md](seismoguard_uno_q/README.md) |
 | Walk the 12-hour build day | [seismoguard_uno_q/BUILD_DAY.md](seismoguard_uno_q/BUILD_DAY.md) |
+| Wire MCU ↔ Linux (USB-CDC vs ttyHS1) | [seismoguard_uno_q/arduino/BRIDGE_NOTES.md](seismoguard_uno_q/arduino/BRIDGE_NOTES.md) |
 | Read the pitch | [seismoguard_uno_q/presentation/slides.md](seismoguard_uno_q/presentation/slides.md) |
 | Q&A drill | [seismoguard_uno_q/presentation/QA_FLASHCARDS.md](seismoguard_uno_q/presentation/QA_FLASHCARDS.md) |
+| Competitive comparison | [seismoguard_uno_q/presentation/COMPARISON.md](seismoguard_uno_q/presentation/COMPARISON.md) |
+| Backup demo storyboard | [seismoguard_uno_q/presentation/DEMO_VIDEO.md](seismoguard_uno_q/presentation/DEMO_VIDEO.md) |
 | Algo schema spec | [algo_polyglot/spec/SAMPLE_RECORD.md](algo_polyglot/spec/SAMPLE_RECORD.md) |
 | Bill of materials | [seismoguard_uno_q/BOM.md](seismoguard_uno_q/BOM.md) |
+| Post-competition roadmap | [ROADMAP.md](ROADMAP.md) |
