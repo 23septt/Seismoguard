@@ -6,8 +6,11 @@
 
 | File | Use |
 |---|---|
-| `slides.md` | Source in pandoc-friendly Markdown |
-| `README.md` | this file |
+| `slides.md`         | 10-slide pitch deck (pandoc-friendly Markdown) |
+| `QA_FLASHCARDS.md`  | Anticipated judge questions + short answers — drill before stage |
+| `COMPARISON.md`     | SeismoGuard vs ShakeAlert / MyShake / EQNet / JMA — novelty table |
+| `DEMO_VIDEO.md`     | 90-second backup video storyboard + recording checklist |
+| `README.md`         | this file |
 
 ## Render to PDF / HTML / pptx
 
@@ -36,6 +39,7 @@ pandoc slides.md -o slides.pptx
 
 ## Backup video
 
-Pre-record a 90-second screen capture of the dashboard during a clean
-demo run. If the live demo fails on stage, play this. Save as
-`presentation/backup_demo.mp4` and bring on a USB flash drive.
+See [`DEMO_VIDEO.md`](DEMO_VIDEO.md) for the full storyboard, recording
+checklist, and live-fallback decision tree. Output goes to
+`presentation/backup_demo.mp4` and **also** the Kingston 16 GB USB flash
+from the kit (dual backup is non-negotiable).
