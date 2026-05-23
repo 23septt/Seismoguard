@@ -1,0 +1,78 @@
+name: CDT2026 tests
+
+on:
+  push:
+    paths:
+      - 'CDT2026/**'
+      - '.github/workflows/cdt2026.yml'
+  pull_request:
+    paths:
+      - 'CDT2026/**'
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run polyglot Python reference tests
+        run: python CDT2026/algo_polyglot/python/test_algo.py -v
+      - name: Run seismoguard_uno_q pipeline tests
+        env:
+          PYTHONPATH: CDT2026/seismoguard_uno_q/linux
+        run: python CDT2026/seismoguard_uno_q/tests/test_pipeline.py -v
+
+  c-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build + test C port
+        working-directory: CDT2026/algo_polyglot/c
+        run: |
+          make test
+          make clean
+      - name: Build C port CLI
+        working-directory: CDT2026/algo_polyglot/c
+        run: make
+
+  parity-check:
+    needs: [python-tests, c-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build C port
+        working-directory: CDT2026/algo_polyglot/c
+        run: make
+      - name: Parity check (Python ref vs C, 1e-9 tolerance)
+        working-directory: CDT2026/algo_polyglot
+        run: python tools/parity_check.py --reference python --compare c --tol 1e-9
+
+  rust-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build + test Rust port
+        working-directory: CDT2026/algo_polyglot/rust
+        run: cargo test --release
+
+  java-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile + run Java tests
+        working-directory: CDT2026/algo_polyglot/java
+        run: |
+          javac SeismoGuardAlgo.java
+          java SeismoGuardAlgo --test
