@@ -1,6 +1,6 @@
 # SeismoGuard
 
-An earthquake early warning device built on ESP32-S3. It detects P-waves using a low-cost MEMS accelerometer (MPU6050) and sends push notifications via ntfy.sh before the shaking arrives.
+An earthquake early warning device built on microcontroller. It detects P-waves using a accelerometer and sends push notifications via ntfy.sh before the shaking arrives.
 
 ## What it does
 
