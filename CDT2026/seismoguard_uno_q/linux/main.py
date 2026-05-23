@@ -28,6 +28,7 @@ from typing import Dict
 from alert import Alerter, AlertConfig
 from dashboard import Dashboard
 from detector import Detector
+from event_log import EventLog
 from serial_bridge import SerialBridge
 
 log = logging.getLogger("main")
@@ -75,6 +76,8 @@ def main() -> int:
     ))
     dash = Dashboard()
     bridge = SerialBridge(args.port, args.baud, detector=det)
+    elog = EventLog()
+    log.info("event log -> %s", elog.path)
 
     try:
         bridge.open()
@@ -108,20 +111,30 @@ def main() -> int:
         elif ev.kind == "trigger":
             dash.push_event(f"TRIGGER ratio={ev.payload}")
             log.info("trigger: %s", ev.payload)
+            elog.append("trigger", {"peak_ratio": ev.payload})
         elif ev.kind == "detrigger":
             dash.push_event("detrigger")
+            elog.append("detrigger", {})
         elif ev.kind == "boot":
             dash.push_event(f"MCU boot fw={ev.payload}")
             log.info("MCU booted: %s", ev.payload)
+            elog.append("mcu_boot", {"fw": ev.payload})
         elif ev.kind == "decision" and ev.decision:
             d = ev.decision
             msg = f"DECISION {d.reason} Mw={d.mw_est:.2f} Pd={d.pd_m*1000:.2f}mm τc={d.tau_c:.2f}s"
             dash.push_event(msg)
             log.info(msg)
+            elog.append("decision", {
+                "reason": d.reason, "mw": d.mw_est,
+                "pd_m": d.pd_m, "tau_c": d.tau_c,
+                "fire_t1": d.fire_t1, "fire_t2": d.fire_t2,
+            })
             if d.fire_t2:
-                alerter.fire_t2(d.mw_est, d.pd_m)
+                fired = alerter.fire_t2(d.mw_est, d.pd_m)
+                elog.append("alert_t2", {"mw": d.mw_est, "suppressed": not fired})
             elif d.fire_t1:
-                alerter.fire_t1()
+                fired = alerter.fire_t1()
+                elog.append("alert_t1", {"suppressed": not fired})
         elif ev.kind == "other":
             log.debug("mcu: %s", ev.payload)
 
