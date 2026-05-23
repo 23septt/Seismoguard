@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Rust
+rust/target/
+rust/Cargo.lock
+
+# Java
+java/*.class
+
+# C
+c/seismoguard_algo
+c/seismoguard_algo.exe
+c/test_algo
+c/test_algo.exe
+c/*.o

@@ -1,0 +1,20 @@
+[package]
+name        = "seismoguard_algo"
+version     = "0.1.0"
+edition     = "2021"
+description = "SeismoGuard EEW algorithm — Rust port for Coding Thailand 2026 (Arduino UNO Q)"
+license     = "MIT OR Apache-2.0"
+
+[lib]
+name = "seismoguard_algo"
+path = "src/lib.rs"
+
+[[bin]]
+name = "seismoguard_algo"
+path = "src/bin/seismoguard_algo.rs"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
+lto       = true
