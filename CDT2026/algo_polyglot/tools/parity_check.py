@@ -105,11 +105,10 @@ def main() -> int:
     ap.add_argument("--reference", default="python", choices=PORTS.keys())
     ap.add_argument("--compare", default="all",
                     help="port name or 'all'")
-    ap.add_argument("--tol", type=float, default=1e-3,
-                    help="numeric tolerance per field. Default 1e-3 absorbs "
-                         "print-precision drift between ports (C printf vs "
-                         "Python round-to-6). Drop to 1e-9 for algo-only check "
-                         "if all ports use identical print precision.")
+    ap.add_argument("--tol", type=float, default=1e-9,
+                    help=("numeric tolerance per field. Default 1e-9 because "
+                          "all four ports now use precision-matched JSON. "
+                          "Raise to 1e-3 if you reintroduce printf truncation."))
     args = ap.parse_args()
 
     csv_in = generate_input()
