@@ -9,7 +9,11 @@ Stick this on the wall. Tick boxes in pen.
 - [ ] Phone with ntfy.sh app installed + subscribed to your test topic
 - [ ] This repo cloned offline (USB flash drive backup)
 - [ ] Printed `assets/flowchart.md` A3 + this checklist A4
-- [ ] ESD wrist strap, foam pad, cable ties, kapton tape, "DO NOT TOUCH" sign
+- [ ] Printed `presentation/QA_FLASHCARDS.md` (study aid)
+- [ ] Arduino IDE 2.x + **`Arduino_Modulino` library** installed via
+      Library Manager (search "Modulino", install latest)
+- [ ] ESD wrist strap, foam pad (FOR PACKAGING ONLY — not under final
+      enclosure), cable ties, kapton tape, "DO NOT TOUCH" sign
 
 ## H0 – H1: Inventory + first power
 
@@ -52,6 +56,14 @@ Stick this on the wall. Tick boxes in pen.
       python3 -m linux.main --port /dev/ttyACM0
       ```
       → open `http://localhost:8080` on a 2nd device, see live ratio.
+- [ ] **Run `python3 scripts/latency_probe.py --port /dev/ttyACM0 --runs 3`**
+      → records P-onset → buzzer round-trip. Target: median ≤ 500 ms for T1,
+      ≤ 3.2 s for T2. Write the numbers in pencil on the build day sheet —
+      they go in the deck (slide 6).
+- [ ] **Smoke-test the replay tool:**
+      `python3 scripts/replay_stead.py --csv tests/fixtures/synthetic_pwave.csv --sim`
+      → expect "decision = ... reason='Mw_ge_T2'". Confirms the detector
+      pipeline matches the canned waveform before you trust the live IMU.
 
 ## H6 – H8: Enclosure + presentation
 
