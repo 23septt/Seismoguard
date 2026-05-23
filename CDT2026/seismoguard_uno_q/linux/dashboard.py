@@ -24,23 +24,40 @@ INDEX_HTML = """<!doctype html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1116">
 <title>SeismoGuard CDT2026 — Live</title>
 <style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
   body { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-         background:#0e1116; color:#e6edf3; margin:0; padding:1rem; }
+         background:#0e1116; color:#e6edf3; margin:0; padding:1rem;
+         -webkit-text-size-adjust:100%; }
+  h1 { font-size:1.2rem; margin:0 0 1rem 0; }
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .card { background:#161b22; border:1px solid #30363d; border-radius:8px;
-          padding:1rem; }
-  .big  { font-size:3rem; font-weight:700; }
+          padding:1rem; min-width:0; }
+  .big  { font-size:clamp(2rem, 12vw, 3rem); font-weight:700;
+          font-variant-numeric:tabular-nums; word-break:break-word; }
   .state-STANDBY    { color:#3fb950; }
   .state-DETECTING  { color:#d29922; }
   .state-ALARMING   { color:#f85149; }
   .state-LOCKOUT    { color:#58a6ff; }
   ul#events { list-style:none; padding:0; margin:0; max-height:300px;
-              overflow:auto; font-size:.9rem; }
-  ul#events li { padding:.25rem 0; border-bottom:1px solid #21262d; }
+              overflow:auto; font-size:.9rem;
+              -webkit-overflow-scrolling:touch; }
+  ul#events li { padding:.5rem 0; border-bottom:1px solid #21262d;
+                 word-break:break-word; }
   canvas { width:100%; height:120px; background:#0d1117;
-           border:1px solid #30363d; border-radius:4px; }
+           border:1px solid #30363d; border-radius:4px; touch-action:none; }
+  /* phone / portrait — collapse to single column, taller wave */
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .card[style*="grid-column"] { grid-column: auto !important; }
+    canvas { height: 160px; }
+    .big  { font-size: clamp(2.5rem, 18vw, 4rem); }
+    h1 { font-size: 1rem; }
+  }
 </style>
 </head>
 <body>
