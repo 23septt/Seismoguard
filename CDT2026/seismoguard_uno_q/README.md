@@ -44,21 +44,35 @@ All Modulinos chain over Qwiic I²C. No soldering required.
 ```
 seismoguard_uno_q/
 ├─ arduino/
-│  ├─ seismoguard_uno_q.ino      MCU sketch (100 Hz, STA/LTA, Pixels FSM)
-│  └─ config.h.template          per-venue threshold overrides
+│  ├─ seismoguard_uno_q.ino      MCU sketch (Modulino lib, self-test cmd)
+│  ├─ config.h.template          per-venue threshold overrides
+│  └─ BRIDGE_NOTES.md            MCU↔Linux wiring options (USB-CDC vs ttyHS1)
 ├─ linux/
 │  ├─ detector.py                Pd/τc/Mw pipeline + decision
 │  ├─ serial_bridge.py           parse MCU CSV, dispatch
 │  ├─ alert.py                   TTS playback, ntfy, cooldown
 │  ├─ dashboard.py               Flask live view (port 8080)
+│  ├─ event_log.py               append-only JSONL log + rotation
 │  ├─ main.py                    orchestrator
 │  ├─ requirements.txt
 │  └─ seismoguard.conf.example   copy to .conf and edit
-├─ tests/test_pipeline.py        unittest — pipeline sanity
+├─ tests/
+│  ├─ test_pipeline.py           unittest — pipeline sanity
+│  └─ fixtures/synthetic_pwave.csv   500-sample canned waveform
+├─ enclosure/
+│  ├─ seismoguard_case.scad      OpenSCAD source (base + lid)
+│  └─ README.md                  print + fallback notes
+├─ presentation/
+│  ├─ slides.md                  3-min pitch (pandoc-friendly)
+│  ├─ QA_FLASHCARDS.md           judge Q&A drill
+│  └─ README.md                  render commands + speaker notes
+├─ BOM.md                        parts + cost summary
 ├─ scripts/
 │  ├─ install.sh                 apt + pip bootstrap
 │  ├─ calibrate.py               on-venue noise floor → threshold rec
-│  └─ gen_tts.py                 render Thai alert wavs (espeak-ng)
+│  ├─ gen_tts.py                 render Thai alert wavs (espeak-ng)
+│  ├─ latency_probe.py           round-trip P-onset → alert measurer
+│  └─ replay_stead.py            CSV → detector or → MCU stream
 ├─ assets/                       generated TTS wavs land here
 ├─ BUILD_DAY.md                  12-hour competition checklist
 └─ README.md                     (this file)
