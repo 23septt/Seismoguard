@@ -169,9 +169,11 @@ sg_decision_t sg_algo_process(sg_algo_t *a, double ax, double ay, double az,
 }
 
 size_t sg_record_to_json(const sg_record_t *r, char *buf, size_t buf_len) {
+    /* sta_lta_ratio matches Python's round-to-6 (%.6f); cf_z + mpd_raw keep
+     * full double precision (%.17g) so parity_check.py can hit 1e-9 tol. */
     int n = snprintf(buf, buf_len,
-        "{\"timestamp_ms\":%u,\"sta_lta_ratio\":%g,\"cf_z\":%g,"
-        "\"mpd_raw\":%g,\"sample_count\":%u}",
+        "{\"timestamp_ms\":%u,\"sta_lta_ratio\":%.6f,\"cf_z\":%.17g,"
+        "\"mpd_raw\":%.17g,\"sample_count\":%u}",
         (unsigned)r->timestamp_ms,
         r->sta_lta_ratio, r->cf_z, r->mpd_raw,
         (unsigned)r->sample_count);
