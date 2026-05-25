@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SeismoGuard S3 — Flowchart</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Leelawadee UI','Tahoma',sans-serif;
+  background:#fff;color:#3D1010;
+  padding:14px 16px;
+  width:860px;margin:0 auto;
+}
+h1{text-align:center;font-size:22px;font-weight:800;color:#6B1A2A;margin-bottom:2px}
+.meta{text-align:center;font-size:11px;color:#7a3a3a;margin-bottom:12px}
+
+.grid{
+  display:grid;
+  grid-template-columns:355px 355px;
+  gap:0px;
+  justify-content:center;
+}
+
+.col{display:flex;flex-direction:column;align-items:flex-start}
+.col-title{
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#6B1A2A;border-bottom:2px solid #E8C040;
+  margin-bottom:8px;padding-bottom:3px;width:100%;text-align:center;
+}
+
+/* ── BOXES ── */
+.box{
+  width:230px;padding:5px 10px;border-radius:7px;
+  text-align:center;font-size:12.5px;font-weight:600;
+  line-height:1.35;border:2px solid;margin:0
+}
+.bterm  {border-color:#6B1A2A;background:#6B1A2A;color:#E8C040;border-radius:999px}
+.bproc  {border-color:#6B1A2A;background:#FFF8E7;color:#3D1010}
+.bwarn  {border-color:#9B1C1C;background:#FEE2E2;color:#7f1d1d}
+.bgreen {border-color:#166534;background:#F0FDF4;color:#166534}
+.bsub   {border-color:#E8C040;background:#FFFBEB;color:#78350f}
+.bdata  {border-color:#6B1A2A;background:#F5F0E8;color:#3D1010}
+.balert {border-color:#9B1C1C;background:#9B1C1C;color:#FEE2E2;font-weight:700;border-width:2px}
+.bsilent{border-color:#9ca3af;background:#F9FAFB;color:#6b7280}
+
+/* small NO-branch boxes */
+.sbox{
+  padding:3px 6px;border-radius:5px;text-align:center;
+  font-size:11px;font-weight:600;line-height:1.25;
+  border:1.5px solid;white-space:nowrap
+}
+
+/* ── DOWN ARROW ── */
+.arr{display:flex;flex-direction:column;align-items:center;width:230px;margin:1px 0}
+.al{width:2px;height:8px;background:#E8C040}
+.ah{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #E8C040}
+.lbl{font-size:10.5px;color:#6B1A2A;font-weight:600;width:230px;text-align:center;line-height:1.3;margin:1px 0}
+
+/* ── DIAMOND ── */
+.dw{
+  position:relative;
+  width:230px;height:90px;
+  margin:1px 0;
+  display:flex;align-items:center;justify-content:center;
+  isolation:isolate;
+}
+.dw::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  background:#6B1A2A;
+}
+.dw::after{
+  content:'';position:absolute;inset:3px;z-index:1;
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  background:#FFF8E7;
+}
+.dw span{
+  position:relative;z-index:2;
+  font-size:11.5px;font-weight:700;color:#3D1010;
+  text-align:center;line-height:1.25;padding:0 18px;
+}
+
+/* NO branch */
+.nb{
+  position:absolute;top:50%;left:230px;
+  transform:translateY(-50%);
+  display:flex;align-items:center;gap:0;
+  z-index:10;
+}
+.nh{width:16px;height:2px;background:#E8C040;flex-shrink:0}
+.na{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #E8C040;flex-shrink:0}
+.nc{margin-left:4px;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.nl{font-size:10px;color:#6B1A2A;font-weight:700;line-height:1;font-style:italic}
+
+/* ── FOOTER ── */
+.ft{
+  margin-top:12px;padding-top:8px;border-top:2px solid #E8C040;
+  text-align:center;font-size:10.5px;color:#7a3a3a;line-height:1.6
+}
+</style>
+</head>
+<body>
+
+<h1>SeismoGuard EEW — System Flowchart</h1>
+<div class="meta">seismoguard_s3.ino · v1.4.1-s3 · ESP32-S3 · Z-axis STA/LTA + Pd Mw-gated Alert</div>
+
+<div class="grid">
+
+<!-- ════════════════════════════
+     ①  INITIALIZATION
+════════════════════════════ -->
+<div class="col">
+  <div class="col-title">① Initialization — setup()</div>
+
+  <div class="box bterm">BOOT</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">Init Display · Storage · Notification</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>MPU6050<br>found on I²C?</span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bwarn">Error:<br>Restart</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES ↓</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">WiFi Connect + NTP Sync</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">Start Push Notification Service</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>Calibration<br>30 s OK?</span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bwarn">Retry once<br>then proceed</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES ↓</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">Start 50 Hz Sampling</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bterm">Start Main Loop</div>
+</div>
+
+
+<!-- ════════════════════════════
+     ②  processSample + State Logic
+════════════════════════════ -->
+<div class="col">
+  <div class="col-title">② Signal Processing &amp; Detection</div>
+
+  <div class="box bterm">Runs every 20 ms</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bdata">Read Accelerometer</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">Filter Signal &amp; Measure Motion<br><span style="font-size:9px">Remove DC offset · Detect vibration level · Track zero-crossings</span></div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>P-wave Detected?<br><span style="font-size:8.5px">STA/LTA ratio ≥ 6.0</span></span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bgreen">Continue</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES → Start counting triggers</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>Real quake signal?<br><span style="font-size:8.5px">3 triggers + wave pattern valid</span></span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bsilent">Discard &amp; Continue</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES → Begin magnitude estimation</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bproc">Measure ground displacement for 3 s<br><span style="font-size:9px">Estimate magnitude (Mpd)</span></div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>Mpd ≥ 5.0?</span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bsilent">No Alert, Continue</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES ↓</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box balert">Sound Alarm + Send Push Notification</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="dw">
+    <span>Event Over?<br><span style="font-size:8.5px">ratio &lt; 1.5 or 15 s timeout</span></span>
+    <div class="nb">
+      <div class="nh"></div><div class="na"></div>
+      <div class="nc"><div class="nl">NO</div><div class="sbox bsilent">Keep<br>alarm on</div></div>
+    </div>
+  </div>
+  <div class="lbl">YES → Cool down → Back to idle</div>
+  <div class="arr"><div class="al"></div><div class="ah"></div></div>
+
+  <div class="box bterm">Return to main loop</div>
+</div>
+
+</div><!-- end grid -->
+
+<div class="ft">
+  STA τ=0.5 s · LTA τ=30 s · Trigger ratio=6.0 · Min triggers=3 · Estimation window=3 s · Mpd alert threshold=5.0 · PRELIMINARY — not calibrated for Thailand
+</div>
+
+</body>
+</html>

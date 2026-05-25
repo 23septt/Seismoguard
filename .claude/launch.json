@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blackmystery",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/OneDrive/Desktop/Claude_Home/Earthquake/serve.js"],
+      "port": 5500,
+      "autoPort": true
+    }
+  ]
+}

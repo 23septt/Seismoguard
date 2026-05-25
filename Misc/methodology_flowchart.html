@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #ffffff;
+    font-family: 'Leelawadee UI', 'Tahoma', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px 24px;
+    min-height: 0;
+  }
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 520px;
+  }
+  .step {
+    width: 100%;
+    background: #F5F0E8;
+    border-radius: 12px;
+    border: 3px solid #E8C040;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+    position: relative;
+  }
+  .step.highlight {
+    background: #FFF8E7;
+    border-color: #E8C040;
+    border-width: 3.5px;
+  }
+  .num {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #6B1A2A;
+    border: 3px solid #E8C040;
+    color: #E8C040;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .content { flex: 1; }
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #6B1A2A;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .desc {
+    font-size: 17px;
+    color: #3D1010;
+    line-height: 1.4;
+  }
+  .tag {
+    display: inline-block;
+    background: #6B1A2A;
+    color: #E8C040;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 2px 9px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.3px;
+  }
+  .arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+  }
+  .arrow svg { display: block; }
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #6B1A2A;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 18px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="flow">
+  <div class="header">
+    <h1>วิธีดำเนินงาน</h1>
+    <p>ขั้นตอนการพัฒนาระบบเตือนภัยแผ่นดินไหวล่วงหน้าต้นทุนต่ำ</p>
+  </div>
+
+  <div class="step highlight">
+    <div class="num">1</div>
+    <div class="content">
+      <div class="title">ออกแบบและสร้างอุปกรณ์จำลอง P-wave <span class="tag">Hardware</span></div>
+      <div class="desc">ออกแบบโครงสร้าง 3 มิติด้วย SketchUp และประกอบด้วยอลูมิเนียมโปรไฟล์ รางเลื่อน มอเตอร์ และกลไกข้อเหวี่ยง เพื่อจำลองการสั่นสะเทือนในช่วงความถี่ 1–10 Hz</div>
+    </div>
+  </div>
+
+  <div class="arrow">
+    <svg width="24" height="36" viewBox="0 0 24 36">
+      <line x1="12" y1="0" x2="12" y2="24" stroke="#E8C040" stroke-width="2.5"/>
+      <polygon points="12,36 5,20 19,20" fill="#E8C040"/>
+    </svg>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="content">
+      <div class="title">ออกแบบและติดตั้งอุปกรณ์แจ้งเตือน <span class="tag">Hardware</span></div>
+      <div class="desc">เชื่อมต่อ Accelerometer (MPU6050) กับ Arduino Uno R3 และ ESP32-S3 พร้อม Buzzer และจอ TFT เพื่อประมวลผลสัญญาณแบบ real-time</div>
+    </div>
+  </div>
+
+  <div class="arrow">
+    <svg width="24" height="36" viewBox="0 0 24 36">
+      <line x1="12" y1="0" x2="12" y2="24" stroke="#E8C040" stroke-width="2.5"/>
+      <polygon points="12,36 5,20 19,20" fill="#E8C040"/>
+    </svg>
+  </div>
+
+  <div class="step highlight">
+    <div class="num">3</div>
+    <div class="content">
+      <div class="title">พัฒนาอัลกอริทึม STA/LTA Recursive <span class="tag">Algorithm</span></div>
+      <div class="desc">ออกแบบการตรวจจับ P-wave โดยคำนวณ Characteristic Function จากแกน Z และเปรียบเทียบค่าเฉลี่ยระยะสั้นต่อระยะยาว (STA/LTA) แบบ Exponential Moving Average</div>
+    </div>
+  </div>
+
+  <div class="arrow">
+    <svg width="24" height="36" viewBox="0 0 24 36">
+      <line x1="12" y1="0" x2="12" y2="24" stroke="#E8C040" stroke-width="2.5"/>
+      <polygon points="12,36 5,20 19,20" fill="#E8C040"/>
+    </svg>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div class="content">
+      <div class="title">หาพารามิเตอร์ที่เหมาะสมด้วย Grid Search <span class="tag">Optimization</span></div>
+      <div class="desc">ทดสอบ 980 ชุดพารามิเตอร์บนฐานข้อมูล STEAD จำนวน 689 ชุดข้อมูล (P-wave 439 + Noise 250 ตัวอย่าง)</div>
+    </div>
+  </div>
+
+  <div class="arrow">
+    <svg width="24" height="36" viewBox="0 0 24 36">
+      <line x1="12" y1="0" x2="12" y2="24" stroke="#E8C040" stroke-width="2.5"/>
+      <polygon points="12,36 5,20 19,20" fill="#E8C040"/>
+    </svg>
+  </div>
+
+  <div class="step highlight">
+    <div class="num">5</div>
+    <div class="content">
+      <div class="title">พัฒนาอัลกอริทึมประมาณขนาดแผ่นดินไหว <span class="tag">Algorithm</span></div>
+      <div class="desc">คำนวณค่า Peak Displacement (Pd) จากสัญญาณ 3 วินาทีแรก แล้วแปลงเป็นขนาดแผ่นดินไหวด้วยสมการของ Wu &amp; Kanamori (2005) เพื่อตัดสินใจส่งการแจ้งเตือน</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
