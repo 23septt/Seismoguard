@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__*",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "PowerShell(D:\\\\arduino-cli\\\\arduino-cli.exe board list --config-file D:\\\\arduino-cli-config.yaml 2>&1)",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "PowerShell(python -m pip install defusedxml -q 2>&1)"
+    ]
+  }
+}

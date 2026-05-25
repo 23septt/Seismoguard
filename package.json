@@ -1,0 +1,39 @@
+{
+  "name": "seismoguard",
+  "version": "1.2.0",
+  "description": "Single-station MEMS earthquake P-wave detector with two-tier alert (ESP32-S3 + MPU6050).",
+  "main": "roc_analysis.js",
+  "scripts": {
+    "roc": "node roc_analysis.js",
+    "pr": "node pr_curve.js",
+    "baselines": "node baselines.js",
+    "grid": "node param_test.js",
+    "adaptive": "node adaptive_threshold.js",
+    "adaptive-2d": "node adaptive_sweep2d.js",
+    "pd": "node pd_magnitude.js",
+    "pptx": "node make_pptx.js",
+    "flowchart": "node screenshot_flowchart.js",
+    "stead-extract": "python3 stead_extractor.py",
+    "bm-data": "node generate_bm_data.js",
+    "test": "echo \"No tests yet — see tests/ for hardware-loop sketches\" && exit 0"
+  },
+  "keywords": [
+    "earthquake",
+    "eew",
+    "sta-lta",
+    "mpu6050",
+    "esp32",
+    "seismology",
+    "stead"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "docx": "^9.6.1",
+    "pptxgenjs": "^4.0.1"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.40.0"
+  }
+}
